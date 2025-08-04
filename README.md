@@ -1,7 +1,11 @@
 # Comandos Úteis
 
 - npx create-expo-app@latest --template //Cria o projeto React Nativo com Expo
-npx expo start
+
+
+# Comandos Expo
+-- npx start (roda o projeto no expo)
+-- npx expo start --tunnel
 
 
 

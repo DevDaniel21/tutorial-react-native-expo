@@ -1,13 +1,22 @@
-import { View, StyleSheet } from 'react-native';
-import Header from './src/components/Header';
-import Card from './src/components/Card';
-import Button from './src/components/Button';
-import Footer from './src/components/Footer';
+import { View, Text, StyleSheet } from 'react-native';
+import Header from '../components/Header';
+import Card from '../components/Card';
+import Button from '../components/Button';
+import Footer from '../components/Footer';
+import { Link } from 'expo-router';
 
-export default function App() {
+export default function Home() {
     return (
         <View style={styles.container}>
             <Header />
+            <View>
+                <Link href={'/contact'}>
+                    <Text>Contato</Text>
+                </Link>
+                <Link href={'/about'}>
+                    <Text>About us</Text>
+                </Link>
+            </View>
 
             <View style={styles.content}>
                 <Card

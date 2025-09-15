@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Image } from 'expo-image';
-import { FontAwesome } from '@expo/vector-icons';
+import { Feather, FontAwesome } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function CardUser({ id, name, email, avatar, users, setUsers }) {
+    
+    const router = useRouter();
 
     const handleDelete = async () => {
         const response = await fetch(`http://localhost:3000/profile/${id}`, {
@@ -10,11 +13,19 @@ export default function CardUser({ id, name, email, avatar, users, setUsers }) {
         });
         if (response.ok) {
             console.log('Deletado com sucesso');
-            const updatedUsers = users.filter(user => user.id !== id) // cria um novo array sem o id que foi excluído
-            setUsers(updatedUsers)
+            const updatedUsers = users.filter((user) => user.id !== id); // cria um novo array sem o id que foi excluído
+            setUsers(updatedUsers);
         } else {
             console.log('Erro ao deletar');
         }
+    };
+
+    const handleEdit = async () => {
+        console.log('Edit');
+        router.push({
+            pathname: '/edituser',
+            params: { id, name, email, avatar },
+        });
     };
 
     return (
@@ -25,6 +36,9 @@ export default function CardUser({ id, name, email, avatar, users, setUsers }) {
                 <Text style={styles.card_description}>{email}</Text>
             </View>
             <View>
+                <Pressable onPress={handleEdit}>
+                    <Feather name="edit" size={24} color="black" />
+                </Pressable>
                 <Pressable onPress={handleDelete}>
                     <FontAwesome name="trash" size={24} color="black" />
                 </Pressable>

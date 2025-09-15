@@ -24,3 +24,4 @@
 -   O estilo no React Native é igual do CSS da Web
 -   O que são propriedades dos componentes
 -   Quais tipos de navegação do expo-router: Stack (empilhar telas), tabs (icones em baixo), drawer, modals
+-   useEffect, é um hook que dispara uma função sempre que o componente é exibido

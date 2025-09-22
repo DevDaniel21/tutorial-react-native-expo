@@ -2,10 +2,12 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useUserStore } from '../stores/useUserStore';
 
-export default function CardUser({ id, name, email, avatar, users, setUsers }) {
+export default function CardUser({ id, name, email, avatar }) {
     
     const router = useRouter();
+    const { users, setUsers } = useUserStore()
 
     const handleDelete = async () => {
         const response = await fetch(`http://localhost:3000/profile/${id}`, {
@@ -21,7 +23,6 @@ export default function CardUser({ id, name, email, avatar, users, setUsers }) {
     };
 
     const handleEdit = async () => {
-        console.log('Edit');
         router.push({
             pathname: '/edituser',
             params: { id, name, email, avatar },

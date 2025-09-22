@@ -1,20 +1,25 @@
 import { View, Text, Button, StyleSheet, TextInput } from 'react-native';
 import { useRouter, useGlobalSearchParams } from 'expo-router';
 import { useState } from 'react';
-
+import { useUserStore } from '../stores/useUserStore';
 
 export default function EditUser() {
-
-    // TODO: Terminar o envio dos dados para o backend
     const router = useRouter();
-    const { id, name: eName, email: eEmail, avatar: eAvatar } = useGlobalSearchParams()
-
+    const {
+        id,
+        name: eName,
+        email: eEmail,
+        avatar: eAvatar,
+    } = useGlobalSearchParams();
+    
     const [name, setName] = useState(eName);
     const [email, setEmail] = useState(eEmail);
     const [pass, setPass] = useState('');
     const [avatar, setAvatar] = useState(eAvatar);
-
-    const handleSignup = async () => {
+    
+    const { users, setUsers } = useUserStore();
+    
+    const handleEdit = async () => {
         const profile = {
             name,
             email,
@@ -22,8 +27,8 @@ export default function EditUser() {
             avatar,
         };
 
-        const response = await fetch('http://localhost:3000/profile', {
-            method: 'POST',
+        const response = await fetch(`http://localhost:3000/profile/${id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -31,10 +36,18 @@ export default function EditUser() {
         });
 
         if (response.ok) {
-            console.log('Cadastrado com sucesso');
-            router.navigate('/home');
+            console.log('Perfil editado com sucesso');
+            // atualizar lista de usuários na store
+            const updatedUsers = users.map((user) => {
+                if (user.id === id) {
+                    return { id, ...profile };
+                }
+                return user;
+            });
+            setUsers(updatedUsers);
+            router.navigate('/contact');
         } else {
-            console.log('Erro ao cadastrar');
+            console.log('Erro ao editar');
         }
     };
 
@@ -72,7 +85,7 @@ export default function EditUser() {
             </View>
 
             <View style={{ marginTop: 20 }}>
-                <Button title="Cadastrar" onPress={handleSignup} />
+                <Button title="Editar" onPress={handleEdit} />
             </View>
         </View>
     );
